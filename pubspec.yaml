@@ -1,5 +1,5 @@
 name: zklogin
-description: Sui ZkLogin Dart SDK.
+description: Sui zkLogin Dart SDK.
 version: 0.0.1
 homepage: https://github.com/mofalabs/zklogin
 
@@ -12,10 +12,7 @@ dependencies:
     sdk: flutter
 
   poseidon: ^0.0.1
-  sui:
-    git:
-      url: https://github.com/mofalabs/sui.git
-      ref: 4c53f3e
+  sui: ^0.1.6
 
 dev_dependencies:
   flutter_test:

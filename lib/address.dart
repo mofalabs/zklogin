@@ -66,13 +66,6 @@ String computeZkLoginAddress({
   );
 }
 
-/**
- *  BigInt(userSalt),
-    "sub",
-    decodedJwt.sub,
-    decodedJwt.aud as string
- */
-
 Map decodeJwt(String jwt) {
   List<String> parts = jwt.split('.');
   if (parts.length == 5) {
