@@ -1,4 +1,5 @@
 import "package:sui/sui.dart";
+import "package:sui/utils/hex.dart";
 
 import "poseidon.dart";
 
@@ -8,7 +9,7 @@ const MAX_AUD_VALUE_LENGTH = 145;
 const PACK_WIDTH = 248;
 
 String getExtendedEphemeralPublicKey(PublicKey publicKey) {
-  return publicKey.toSuiPublicKey();
+  return BigInt.parse(Hex.encode(publicKey.toSuiBytes()), radix: 16).toString();
 }
 
 /// Splits an array into chunks of size chunk_size. If the array is not evenly
