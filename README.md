@@ -1,6 +1,6 @@
 ## zkLogin
 
-[![Pub](https://img.shields.io/badge/pub-v0.0.1-blue)](https://pub.dev/packages/zklogin)
+[![Pub](https://img.shields.io/badge/pub-v0.0.2-blue)](https://pub.dev/packages/zklogin)
 
 Sui zkLogin Dart SDK
 
@@ -8,5 +8,5 @@ Sui zkLogin Dart SDK
 
 ```
 dependencies:
-  zklogin: ^0.0.1
+  zklogin: ^0.0.2
 ```
