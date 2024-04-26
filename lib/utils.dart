@@ -1,6 +1,8 @@
 import "package:sui/sui.dart";
 import "package:sui/utils/hex.dart";
+import "package:zklogin/proof.dart";
 
+import "nonce.dart";
 import "poseidon.dart";
 
 const MAX_KEY_CLAIM_NAME_LENGTH = 32;
@@ -21,8 +23,8 @@ List<List<dynamic>> chunkArray<T>(List<T> array, int chunkSize) {
   final revArray = array.reversed;
   List<List<dynamic>> chunks = List.generate(
     (revArray.length / chunkSize).ceil(),
-    (i) =>
-        List.from(revArray.skip(i * chunkSize).take(chunkSize).toList().reversed),
+    (i) => List.from(
+        revArray.skip(i * chunkSize).take(chunkSize).toList().reversed),
   ).toList();
   return chunks.reversed.toList();
 }
@@ -68,4 +70,35 @@ BigInt genAddressSeed(
     hashASCIIStrToField(aud, maxAudLength),
     poseidonHash([salt]),
   ]);
+}
+
+Future<Map<String, dynamic>> getZkLoginInfo() async {
+  SuiClient client = SuiClient(SuiUrls.devnet);
+  // get ephemeralKeyPair
+  var ephemeralKey = Ed25519Keypair();
+  var publicKey = ephemeralKey.getPublicKey();
+  // get randomness
+  String randomness = generateRandomness();
+  // get maxEpoch
+  var getEpoch = await client.getLatestSuiSystemState();
+  var epoch = getEpoch.epoch;
+  var maxEpoch = int.parse(epoch) + 10;
+  // get nonce
+  var nonce = generateNonce(publicKey, maxEpoch.toInt(), randomness);
+  print('randomness: $randomness');
+  print('maxEpoch: $maxEpoch');
+  print('nonce: $nonce');
+
+  RequestProofModel proofRequestInfo = getRequestProofInput(
+      publicKey: ephemeralKey.getPublicKey(),
+      maxEpoch: maxEpoch,
+      randomness: randomness,
+      salt: '255873485666802367946136116146407409355');
+
+  return {
+    'requestProofModel': proofRequestInfo,
+    'nonce': nonce,
+    'ephemeralKeyPair': ephemeralKey,
+    'maxEpoch': maxEpoch
+  };
 }

@@ -47,4 +47,22 @@ void main() {
     final isValid = nonce == 'fg9VRS1RQuezjY_XlzsYcZ9aQSE';
     expect(isValid, true);
   });
+
+  test('wenimal test generate nonce', () async {
+    SuiClient client = SuiClient(SuiUrls.devnet);
+    // get ephemeralKeyPair
+    var ephemeralkey = Ed25519Keypair();
+    var publicKey = ephemeralkey.getPublicKey();
+    // get randomness
+    String randomness = generateRandomness();
+    // get maxEpoch
+    var getEpoch = await client.getLatestSuiSystemState();
+    var epoch = getEpoch.epoch;
+    var maxEpoch = int.parse(epoch) + 10;
+    // get nonce
+    var nonce = generateNonce(publicKey, maxEpoch.toInt(), randomness);
+    print('randomness: $randomness');
+    print('maxEpoch: $maxEpoch');
+    print('nonce: $nonce');
+  });
 }
