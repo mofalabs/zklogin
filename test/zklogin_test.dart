@@ -3,11 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sui/sui.dart';
-import 'package:sui/utils/hex.dart';
-import 'package:zklogin/address.dart';
-import 'package:zklogin/utils.dart';
 
 import 'package:dio/dio.dart';
+import 'package:zklogin/zklogin.dart';
 
 void main() {
   
@@ -15,9 +13,11 @@ void main() {
 
     const maxEpoch = 140;
 
-    const randomness = '52093847050252666398858998671021422992';
+    final randomness = generateRandomness();
 
-    // const nonce = 'eXcm9IR3-8p4MAwb3u5dm8T2CvE';
+    final ephemeralKeypair = Ed25519Keypair();
+
+    final nonce = generateNonce(ephemeralKeypair.getPublicKey(), maxEpoch, randomness);
 
     const jwtStr = 'xxx.yyy.zzz';
     final jwt = decodeJwt(jwtStr);
@@ -25,8 +25,6 @@ void main() {
     final userSalt = BigInt.parse('244579473807694399890185396317414759380');
 
     final address = jwtToAddress(jwtStr, userSalt);
-
-    final ephemeralKeypair = Ed25519Keypair.fromSecretKey(base64Decode('fh+VAX39y3W+C0W1lO7QDxXIsD88426bOoPq1g0P5lU='));
 
     final extendedEphemeralPublicKey = getExtendedEphemeralPublicKey(ephemeralKeypair.getPublicKey());
 
@@ -53,8 +51,8 @@ void main() {
     zkProof["addressSeed"] = addressSeed.toString();
 
     final zksign = getZkLoginSignature(ZkLoginSignature(
-        inputs: ZkLoginSignatureInputs.fromJson(zkProof), 
-        maxEpoch: maxEpoch, 
+        inputs: ZkLoginSignatureInputs.fromJson(zkProof),
+        maxEpoch: maxEpoch,
         userSignature: base64Decode(sign.signature)
       )
     );
