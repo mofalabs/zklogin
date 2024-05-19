@@ -13,9 +13,16 @@ dependencies:
 
   poseidon: ^0.0.1
   sui: ^0.2.0
+  http: ^1.2.0
+  jwt_decoder: ^2.0.1
+  webview_flutter: ^4.7.0
+
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
   dio: ^5.1.2
+  jwt_decoder: ^2.0.1
+
