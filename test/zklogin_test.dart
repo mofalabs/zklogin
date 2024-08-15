@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sui/builder/transaction.dart';
 import 'package:sui/sui.dart';
 
 import 'package:dio/dio.dart';
@@ -39,7 +40,7 @@ void main() {
 
     final zkProof = (await Dio().post('https://prover-dev.mystenlabs.com/v1', data: body)).data;
 
-    final txb = TransactionBlock();
+    final txb = Transaction();
     txb.setSenderIfNotSet(address);
     final coin = txb.splitCoins(txb.gas, [txb.pureInt(22222)]);
     txb.transferObjects([coin], txb.pureAddress(address));
