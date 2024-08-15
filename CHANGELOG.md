@@ -9,3 +9,7 @@
 ## 0.0.3
 
 * Fix getExtendedEphemeralPublicKey
+
+## 0.0.4
+
+* Upgrade Sui
